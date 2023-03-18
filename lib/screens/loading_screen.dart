@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:weather/services/location.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({Key? key}) : super(key: key);
@@ -8,25 +8,26 @@ class LoadingScreen extends StatefulWidget {
   State<LoadingScreen> createState() => _LoadingScreenState();
 }
 
-class _LoadingScreenState extends State<LoadingScreen> {
-  Future<void> getLocation() async {
-    // Position position = await Geolocator.getCurrentPosition(
-    //   desiredAccuracy: (LocationAccuracy.low),
-    // );
+double? latitude, longitude;
 
-    LocationPermission permission;
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.deniedForever) {
-        return Future.error('Location Not Wardrobe Available');
-      }
-    } else {
-      throw Exception('Error');
-    }
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.low);
-    print(position);
+class _LoadingScreenState extends State<LoadingScreen> {
+  @override
+  initState() {
+    //  super.initState();
+    //Location().getLocation();
+    getLocation();
+    print('here init method called');
+  }
+
+  void getLocation() async {
+    Location location = Location();
+    await location.getLocation();
+    longitude = location.longitude;
+    latitude = location.latitude;
+    // print(longitude);
+    // print(latitude);
+    // print(Location().longitude);
+    // print(Location().latitude);
   }
 
   @override
@@ -39,8 +40,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  getLocation();
-                  //get the current location
+                  //getLocation();
+                  print(
+                      'here is longitude: $longitude and here is latitude: $latitude');
                 },
                 child: const Text(
                   'get the location',
@@ -53,4 +55,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
       ),
     );
   }
+
+  //void getLocation() {}
 }
