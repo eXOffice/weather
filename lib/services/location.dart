@@ -5,9 +5,11 @@ class Location {
 
   Future<void> getLocation() async {
     try {
+      print('from location class');
       await Geolocator.checkPermission();
       await Geolocator.requestPermission();
       Position? position = await Geolocator.getLastKnownPosition();
+      print('from location class 2');
       // print(position?.latitude);
       // print(position?.longitude);
 

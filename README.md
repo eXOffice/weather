@@ -10,3 +10,8 @@ This project is a starting point for a Flutter application.
 
 ![img_1.png](img_1.png)
 
+added fetch data functionality and came up with getting weather data from any location by weathermap API;
+
+![finalImage](img_4.png)
+
+![testImage](img_2.png)

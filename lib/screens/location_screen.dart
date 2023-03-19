@@ -1,15 +1,45 @@
 import 'package:flutter/material.dart';
 
+import '../utilities/constants.dart';
+
 class LocationScreen extends StatefulWidget {
-  const LocationScreen({Key? key}) : super(key: key);
+  final locationWeather;
+
+  const LocationScreen({Key? key, this.locationWeather}) : super(key: key);
 
   @override
   State<LocationScreen> createState() => _LocationScreenState();
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+  double? tempreture;
+  int? condition;
+  String? cityName;
+  String? weatherDescription;
+
+  @override
+  void initState() {
+    //super.initState();
+    updateUI(widget.locationWeather);
+    // print(widget.locationWeather);
+    //print('WHat happend? -from location screen');
+  }
+
+  void updateUI(dynamic weatherData) {
+    tempreture = weatherData['main']['temp'];
+    condition = weatherData['weather'][0]['id'];
+    cityName = weatherData['name'];
+    weatherDescription = weatherData['weather'][0]['description'];
+    //printing report from weather API
+    print(weatherDescription);
+    print(tempreture?.toInt());
+    print(condition);
+    print(cityName);
+  }
+
   @override
   Widget build(BuildContext context) {
+    int? ktempreture = tempreture?.toInt();
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -26,38 +56,45 @@ class _LocationScreenState extends State<LocationScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              TextButton(
-                onPressed: () {},
-                child: Icon(
-                  Icons.near_me,
-                  size: 50.0,
-                ),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: Icon(
-                  Icons.location_city,
-                  size: 50.0,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: () {},
+                    child: Icon(
+                      Icons.near_me,
+                      size: 50.0,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: Icon(
+                      Icons.location_city,
+                      size: 50.0,
+                    ),
+                  ),
+                ],
               ),
               Padding(
                 padding: EdgeInsets.only(left: 15.0),
                 child: Row(
                   children: [
                     Text(
-                      '32',
-                      //style: kTempTextStyle,
+                      ktempreture.toString(),
+                      style: kTempTextStyle,
                     ),
-                    Text('Sunny Logo'),
-                    //style : kConditionTextStyle
+                    Text(
+                      ' *',
+                      style: kConditionTextStyle,
+                    ),
                   ],
                 ),
               ),
               Padding(
                 padding: EdgeInsets.only(right: 15.0),
                 child: Text(
-                  'Its Cold time in San Francisco!',
-                  //style : kMessageTextStyle
+                  weatherDescription!,
+                  style: kMessageTextStyle,
                 ),
               )
             ],
