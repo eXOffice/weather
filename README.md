@@ -18,3 +18,7 @@ added fetch data functionality and came up with getting weather data from any lo
 
 update location screen by sending piece of data from weather map API
 ![img_3.png](img_3.png)
+
+added cityName as a Input and serve any city weather data in location screen which is user want to get !
+finally ITS DONE !
+![img_5.png](img_5.png)

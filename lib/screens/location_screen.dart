@@ -37,7 +37,7 @@ class _LocationScreenState extends State<LocationScreen> {
       if (weatherData == null) {
         tempreture = 0;
         weatherIcon = 'Error';
-        getMessase = 'Unable to get Weather Data';
+        getMessase = 'Unable to get Weather Data in $cityName';
         cityName = '';
         return;
       }
@@ -91,8 +91,8 @@ class _LocationScreenState extends State<LocationScreen> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {
-                      Navigator.push(
+                    onPressed: () async {
+                      var typedName = await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) {
@@ -100,6 +100,14 @@ class _LocationScreenState extends State<LocationScreen> {
                           },
                         ),
                       );
+                      print(typedName);
+                      if (typedName != null) {
+                        print('its ok with$typedName');
+                        var weatherData =
+                            await weather.getCityWeather(typedName);
+                        print('and its ok too');
+                        updateUI(weatherData);
+                      }
                     },
                     child: Icon(
                       Icons.location_city,
