@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:weather/services/weather.dart';
 
 import '../utilities/constants.dart';
+import 'city_screen.dart';
 
 class LocationScreen extends StatefulWidget {
   final locationWeather;
@@ -14,6 +15,7 @@ class LocationScreen extends StatefulWidget {
 
 class _LocationScreenState extends State<LocationScreen> {
   WeatherModel weather = WeatherModel();
+
   String? weatherIcon;
   double? tempreture;
   int? ktempreture;
@@ -31,20 +33,30 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 
   void updateUI(dynamic weatherData) {
-    tempreture = weatherData['main']['temp'];
-    ktempreture = tempreture?.toInt();
-    getMessase = weather.getMessage(ktempreture!);
+    setState(() {
+      if (weatherData == null) {
+        tempreture = 0;
+        weatherIcon = 'Error';
+        getMessase = 'Unable to get Weather Data';
+        cityName = '';
+        return;
+      }
 
-    condition = weatherData['weather'][0]['id'];
-    cityName = weatherData['name'];
-    weatherDescription = weatherData['weather'][0]['description'];
-    weatherIcon = weather.getWeatherIcon(condition!);
+      tempreture = weatherData['main']['temp'];
+      ktempreture = tempreture?.toInt();
+      getMessase = weather.getMessage(ktempreture!);
 
-    //printing report from weather API
-    print(weatherDescription);
-    print(ktempreture);
-    print(condition);
-    print(cityName);
+      condition = weatherData['weather'][0]['id'];
+      cityName = weatherData['name'];
+      weatherDescription = weatherData['weather'][0]['description'];
+      weatherIcon = weather.getWeatherIcon(condition!);
+
+      //printing report from weather API
+      print(weatherDescription);
+      print(ktempreture);
+      print(condition);
+      print(cityName);
+    });
   }
 
   @override
@@ -69,14 +81,26 @@ class _LocationScreenState extends State<LocationScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      var weatherData = await weather.getLocationWeather();
+                      updateUI(weatherData);
+                    },
                     child: Icon(
                       Icons.near_me,
                       size: 50.0,
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return CityScreen();
+                          },
+                        ),
+                      );
+                    },
                     child: Icon(
                       Icons.location_city,
                       size: 50.0,

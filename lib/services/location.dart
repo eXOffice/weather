@@ -8,7 +8,9 @@ class Location {
       print('from location class');
       await Geolocator.checkPermission();
       await Geolocator.requestPermission();
-      Position? position = await Geolocator.getLastKnownPosition();
+      //Position? position = await Geolocator.getLastKnownPosition();
+      Position? position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.lowest);
       print('from location class 2');
       // print(position?.latitude);
       // print(position?.longitude);
