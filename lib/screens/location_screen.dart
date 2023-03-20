@@ -29,34 +29,29 @@ class _LocationScreenState extends State<LocationScreen> {
     //super.initState();
     updateUI(widget.locationWeather);
     // print(widget.locationWeather);
-    //print('WHat happend? -from location screen');
   }
 
   void updateUI(dynamic weatherData) {
-    setState(() {
-      if (weatherData == null) {
-        tempreture = 0;
-        weatherIcon = 'Error';
-        getMessase = 'Unable to get Weather Data in $cityName';
-        cityName = '';
-        return;
-      }
+    setState(
+      () {
+        if (weatherData == null) {
+          ktempreture = 0;
+          weatherIcon = 'Error';
+          getMessase = 'Unable to get Weather Data';
+          cityName = '';
+          return;
+        }
 
-      tempreture = weatherData['main']['temp'];
-      ktempreture = tempreture?.toInt();
-      getMessase = weather.getMessage(ktempreture!);
+        tempreture = weatherData['main']['temp'];
+        ktempreture = tempreture?.toInt();
+        getMessase = weather.getMessage(ktempreture!);
 
-      condition = weatherData['weather'][0]['id'];
-      cityName = weatherData['name'];
-      weatherDescription = weatherData['weather'][0]['description'];
-      weatherIcon = weather.getWeatherIcon(condition!);
-
-      //printing report from weather API
-      print(weatherDescription);
-      print(ktempreture);
-      print(condition);
-      print(cityName);
-    });
+        condition = weatherData['weather'][0]['id'];
+        cityName = weatherData['name'];
+        weatherDescription = weatherData['weather'][0]['description'];
+        weatherIcon = weather.getWeatherIcon(condition!);
+      },
+    );
   }
 
   @override
